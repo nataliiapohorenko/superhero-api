@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { prisma } from '../prisma/client';
+import { prisma, HeroWithImages } from '../prisma/client';
 import { cloudinary } from '../cloudinary/config';
-import fs from 'fs';
 
 export const getAllHeroes = async (req: Request, res: Response): Promise<void> => {
   const page = parseInt(req.query.page as string) || 1;
@@ -21,7 +20,7 @@ export const getAllHeroes = async (req: Request, res: Response): Promise<void> =
     prisma.superhero.count(),
   ]);
 
-  const heroesBase = heroes.map((hero) => ({
+  const heroesBase = heroes.map((hero: HeroWithImages) => ({
     id: hero.id,
     nickname: hero.nickname,
     images: hero.images
